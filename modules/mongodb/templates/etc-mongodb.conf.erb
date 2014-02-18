@@ -1,0 +1,17 @@
+# Mongodb conf file at /etc/mongodb.conf
+#
+# Documentation:
+# http://www.mongodb.org/display/DOCS/File+Based+Configuration
+#
+# Defaults:
+# https://raw.github.com/mongodb/mongo/master/debian/mongodb.conf
+ 
+dbpath = <%= dbpath %>
+logpath = <%= logpath %>
+logappend = <% logappend %>
+bind_ip = <%= bind_ip %>
+port = <%= port %>
+journal = <%= journal %>
+nojournal = <%= nojournal %>
+ 
+<% if replSet != "" %>replSet = <%= replSet %><% end %>
