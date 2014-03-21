@@ -1,31 +1,30 @@
 class base-mysql::install {
   
-  package { "mysql-server": ensure => installed }
-  package { "mysql": ensure => installed }
+  package { "mysql-server": 
+	ensure => installed 
+	}
+  package { "mysql-client": 
+	ensure => installed 
+	}
 
-  service { "mysqld":
+  service { "mysql":
     enable => true,
     ensure => running,
     provider => upstart,
     require => Package["mysql-server"],
   }
 
-  file { "/var/lib/mysql/my.cnf":
-    owner => "mysql", group => "mysql",
-    source => "puppet:///modules/base-mysql/my.cnf",
-    notify => Service["mysqld"],
-    require => Package["mysql-server"],
+  file { "/root/root_pwd.sql":
+	content => template("base-mysql/root_pwd.sql"),
+	require => Package["mysql-server"],
   }
  
-  file { "/etc/my.cnf":
-    require => File["/var/lib/mysql/my.cnf"],
-    ensure => "/var/lib/mysql/my.cnf",
-  }
-
+#This exec will run fine on first run and after that password for root user will be changed from default one to another one
   exec { "set-mysql-password":
-    unless => "mysqladmin -uroot -p$mysql_password status",
+#    unless => "mysqladmin -uroot -p$mysql_password status",
     path => ["/bin", "/usr/bin"],
-    command => "mysqladmin -uroot password $mysql_password",
-    require => Service["mysqld"],
+# Updating the default password with our custom password
+    command => "mysql -uroot < /root/root_pwd.sql",
+    require => [Service["mysql"], File['/root/root_pwd.sql']],
   }
 }
