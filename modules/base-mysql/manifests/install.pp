@@ -27,4 +27,11 @@ class base-mysql::install {
     command => "mysql -uroot < /root/root_pwd.sql",
     require => [Service["mysql"], File['/root/root_pwd.sql']],
   }
+  
+    exec { "create-db":
+        unless => "/usr/bin/mysql -uroot test",
+        command => "/usr/bin/mysql -uroot -e \"create database test;\"",
+        require => Service["mysql"],
+      }
+
 }
