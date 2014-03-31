@@ -1,1 +1,1 @@
-CHANGE MASTER TO MASTER_HOST='',MASTER_USER='slave_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=  107;
+CHANGE MASTER TO MASTER_HOST='',MASTER_USER='repl', MASTER_PASSWORD='slavepass', MASTER_LOG_FILE='<%= scope.lookupvar('slave-mysql::mysql_log_file') %>', MASTER_LOG_POS= <%= scope.lookupvar('slave-mysql::mysql_log_position') %>;
