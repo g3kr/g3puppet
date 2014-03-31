@@ -1,5 +1,5 @@
 define slave_mysql($mysql_host, $mysql_user, $mysql_pwd, $mysql_log_file, $mysql_log_position) {
-	file { "/etc/my.cnf":
+	file { "/etc/mysql/conf.d/gayatri.cnf":
 		source =>  "puppet:///slave_mysql/my.cnf",
 	}	
 
